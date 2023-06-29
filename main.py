@@ -12,7 +12,7 @@ import sys
 from scene import Scene
 from shader_manager import ShaderManager
 from player import Player
-
+from textures import Textures
 
 #
 class PyVxEngine:
@@ -33,6 +33,8 @@ class PyVxEngine:
         self.dt = 0
         self.time = 0
         
+        self.backface_culling = True
+        
         pg.event.set_grab(True)
         pg.mouse.set_visible(False)
         
@@ -40,6 +42,7 @@ class PyVxEngine:
         self.on_init()
         
     def on_init(self):
+        self.textures = Textures(self)
         self.player = Player(self)
         self.shader_manager = ShaderManager(self)
         self.scene = Scene(self)
@@ -60,8 +63,18 @@ class PyVxEngine:
     
     def handle_events(self):
         for event in pg.event.get():
-            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+            if event.type == pg.QUIT: 
                 self.is_running = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.is_running = False
+                if event.key == pg.K_F5:
+                    self.backface_culling = not self.backface_culling
+                    if self.backface_culling:
+                        self.ctx.enable(flags=mgl.CULL_FACE)
+                    else:
+                        self.ctx.disable(flags=mgl.CULL_FACE)
+    
     
     def run(self):
         while self.is_running:

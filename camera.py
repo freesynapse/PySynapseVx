@@ -43,10 +43,12 @@ class Camera:
         self.position += self.right * velocity
 
     def move_up(self, velocity):
-        self.position += self.up * velocity
+        #self.position += self.up * velocity
+        self.position += glm.vec3(0, 1, 0) * velocity
 
     def move_down(self, velocity):
-        self.position -= self.up * velocity
+        #self.position -= self.up * velocity
+        self.position -= glm.vec3(0, 1, 0) * velocity
 
     def move_back(self, velocity):
         self.position -= self.forward * velocity
